@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = "com.swille")
 @Configuration
 @EnableAutoConfiguration
-public class JavaExpertApplication {
+public class Main {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JavaExpertApplication.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 
 

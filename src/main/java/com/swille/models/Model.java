@@ -1,6 +1,6 @@
-package com.swille;
+package com.swille.models;
 
-public class People {
+public class Model {
     public String getName() {
         return name;
     }
