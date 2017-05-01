@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Vehicle {
-    @JsonProperty("modelYear")
+    @JsonProperty("ModelYear")
     private String modelyear;
-    @JsonProperty("make")
+    @JsonProperty("Make")
     private String make;
-    @JsonProperty("model")
+    @JsonProperty("Model")
     private String model;
 }
