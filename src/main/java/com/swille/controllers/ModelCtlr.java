@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping({"/api"})
 public class ModelCtlr {
@@ -17,7 +19,7 @@ public class ModelCtlr {
     private RecallService service = new RecallService();
 
     @RequestMapping(value="/recalls", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public RecalledVehicles getRecalls()
+    public RecalledVehicles getRecalls() throws IOException
     {
         /*
         * returns object from repo */
