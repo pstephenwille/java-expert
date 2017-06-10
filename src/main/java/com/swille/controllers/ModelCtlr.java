@@ -3,6 +3,7 @@ package com.swille.controllers;
 import com.swille.domain.repository.RecalledVehicles;
 import com.swille.domain.services.RecallService;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +16,7 @@ public class ModelCtlr {
 
     private RecallService service = new RecallService();
 
-    @RequestMapping(value="/recalls", method=RequestMethod.GET)
+    @RequestMapping(value="/recalls", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public RecalledVehicles getRecalls()
     {
         /*
