@@ -1,10 +1,11 @@
 package com.swille.domain.services;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swille.domain.repository.RecalledVehicles;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -19,48 +20,34 @@ import java.io.IOException;
 @Service
 public class RecallService {
 
-    private RestTemplate template = new RestTemplate();
-    private String recalledVehiclesURL = "https://one.nhtsa"
-                                         + ".gov/webapi/api/Recalls/vehicle/modelyear/2000/make/saturn?format=json";
+    @Autowired
+    private RestTemplate template;
+    @Value("${data.recalls.url}")
+    private String recallUrl;
 
-
-    /* no worky; returns null fields */
     public RecalledVehicles getRecalls() throws RestClientException, IOException {
         /* get data, perform business logic, return built domain object. */
-        String jsonString;
         try {
-            /* todo: recalledVehiclesURL returns text/plain;  need to convert to json */
-            jsonString = template.getForEntity(recalledVehiclesURL, String.class).getBody();
-        } catch (RestClientException rcEx) {
-            System.out.println("\033[30;47m" + rcEx);
-            return null;
-        }
-        try {
+            String jsonString = getRecalledVehicles();
             return convertToRecalledVehicles(jsonString);
-        } catch (IOException ioEx) {
-            System.out.println("\033[30;47m" + ioEx);
+        } catch (RestClientException | IOException ex) {
+            System.out.println("\033[30;47m" + ex);
             return null;
         }
     }
 
-    public RecalledVehicles convertToRecalledVehicles(String jsonString) throws IOException {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(jsonString);
-
-            RecalledVehicles recalledVehicles = mapper.readValue(jsonString, RecalledVehicles.class);
-
-            return recalledVehicles;
-        } catch (IOException ioEx) {
-            System.out.println("\033[30;47m" + ioEx);
-            return null;
-        }
+    private String getRecalledVehicles() throws RestClientException {
+        return template.getForEntity(recallUrl, String.class).getBody();
     }
 
-    /* works */
+    private RecalledVehicles convertToRecalledVehicles(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(jsonString, RecalledVehicles.class);
+    }
+
     public ResponseEntity<String> getRecallsEntity() {
         /* get data, perform business logic, return built domain object. */
-        return template.getForEntity(recalledVehiclesURL, String.class);
+        return template.getForEntity(recallUrl, String.class);
     }
 
 }

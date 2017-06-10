@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeCtlr {
 
-    @RequestMapping({"/","/home"})
-    public String home(){return "{name:\"kick ass!\"}"; };
+    @RequestMapping({"/", "/home"})
+    public String home() {
+        System.out.println("\033[30;47m");
+        return "{name:\"kick ass!\"}"; }
 }
 
