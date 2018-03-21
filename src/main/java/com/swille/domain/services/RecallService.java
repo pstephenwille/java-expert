@@ -12,6 +12,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 * domain service
@@ -22,7 +24,7 @@ public class RecallService {
 
     @Autowired
     private RestTemplate template;
-    @Value("${data.recalls.url}")
+    @Value("${data.nhtsa.recalls.url}")
     private String recallUrl;
 
     public RecalledVehicles getRecalls() throws RestClientException, IOException {
@@ -37,7 +39,11 @@ public class RecallService {
     }
 
     private String getRecalledVehicles() throws RestClientException {
-        return template.getForEntity(recallUrl, String.class).getBody();
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("make", "saturn");
+        paramsMap.put("year", "2000");
+
+        return template.getForEntity(recallUrl, String.class, paramsMap).getBody();
     }
 
     private RecalledVehicles convertToRecalledVehicles(String jsonString) throws IOException {
@@ -47,7 +53,10 @@ public class RecallService {
 
     public ResponseEntity<String> getRecallsEntity() {
         /* get data, perform business logic, return built domain object. */
-        return template.getForEntity(recallUrl, String.class);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("year", "2011");
+
+        return template.getForEntity(recallUrl, String.class, map);
     }
 
 }
